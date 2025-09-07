@@ -9,20 +9,20 @@ namespace Demo.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class AccountController(
-    UserManager<IdentityUser> userManager,
-    RoleManager<IdentityRole> roleManager,
+    UserManager<AspNetUser> userManager,
+    RoleManager<AspNetRole> roleManager,
     IConfiguration configuration,
     ApplicationDbContext dbContext) : ControllerBase
 {
-    private readonly UserManager<IdentityUser> userManager = userManager;
-    private readonly RoleManager<IdentityRole> roleManager = roleManager;
+    private readonly UserManager<AspNetUser> userManager = userManager;
+    private readonly RoleManager<AspNetRole> roleManager = roleManager;
     private readonly IConfiguration configuration = configuration;
     private readonly ApplicationDbContext dbContext = dbContext;
 
     [HttpPost(nameof(Register))]
     public async Task<IActionResult> Register(Register register)
     {
-        var user = new IdentityUser
+        var user = new AspNetUser
         {
             UserName = register.UserName,
             Email = register.Email
@@ -30,9 +30,9 @@ public class AccountController(
 
         var result = await this.userManager.CreateAsync(user, register.Password);
 
-        var identityUser = await this.userManager.FindByNameAsync(register.UserName);
+        var AspNetUser = await this.userManager.FindByNameAsync(register.UserName);
 
-        var userProfile = new AspNetUserProfile(identityUser!.Id)
+        var userProfile = new AspNetUserProfile(AspNetUser!.Id)
         {
             FirstName = register.FirstName,
             LastName = register.LastName
@@ -92,7 +92,7 @@ public class AccountController(
     {
         if (!await this.roleManager.RoleExistsAsync(role))
         {
-            var result = await this.roleManager.CreateAsync(new IdentityRole(role));
+            var result = await this.roleManager.CreateAsync(new AspNetRole(role));
             return result.Succeeded ? Ok("Role created successfully!") : BadRequest(result.Errors);
         }
         return BadRequest("Role already exists!");

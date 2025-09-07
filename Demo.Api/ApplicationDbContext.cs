@@ -1,10 +1,9 @@
 ﻿using Demo.Api.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Api;
-public class ApplicationDbContext(IConfiguration configuration) : IdentityDbContext<IdentityUser>
+public class ApplicationDbContext(IConfiguration configuration) : IdentityDbContext<AspNetUser, AspNetRole, Guid>
 {
     private readonly IConfiguration configuration = configuration;
 
@@ -23,7 +22,7 @@ public class ApplicationDbContext(IConfiguration configuration) : IdentityDbCont
         {
             p.Property(p => p.FirstName).HasMaxLength(256);
             p.Property(p => p.LastName).HasMaxLength(256);
-            p.HasOne(p => p.IdentityUser)
+            p.HasOne(p => p.AspNetUser)
                 .WithOne()
                 .HasForeignKey<AspNetUserProfile>(u => u.Id)
                 .OnDelete(DeleteBehavior.Cascade);
