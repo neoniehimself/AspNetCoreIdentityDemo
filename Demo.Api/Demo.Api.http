@@ -1,12 +1,12 @@
 @Demo.Api_HostAddress = https://localhost:7283/api
 
-POST {{Demo.Api_HostAddress}}/account/addrole?role=admin
+POST {{Demo.Api_HostAddress}}/account/addrole?role=Admin
 Content-Type: application/json
 Accept: application/json
 
 ###
 
-POST {{Demo.Api_HostAddress}}/account/addrole?role=user
+POST {{Demo.Api_HostAddress}}/account/addrole?role=User
 Content-Type: application/json
 Accept: application/json
 
@@ -18,10 +18,8 @@ Accept: application/json
 
 {
   "email": "noemail@noemail.com",
-  "username": "john.doe",
-  "password": "P@ssw0rd123!",
-  "firstname": "john",
-  "lastname": "doe"
+  "username": "johndoe",
+  "password": "P@ssw0rd123!"
 }
 
 ###
@@ -31,8 +29,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username": "john.doe",
-  "role": "admin"
+  "username": "johndoe",
+  "role": "Admin"
 }
 
 ###
@@ -42,7 +40,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username": "john.doe",
+  "username": "johndoe",
   "password": "P@ssw0rd123!"
 }
 
