@@ -18,8 +18,10 @@ Accept: application/json
 
 {
   "email": "noemail@noemail.com",
-  "username": "johndoe",
-  "password": "P@ssw0rd123!"
+  "username": "jdoe",
+  "password": "P@ssw0rd123!",
+  "firstname": "John",
+  "lastname": "Doe"
 }
 
 ###
@@ -29,7 +31,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username": "johndoe",
+  "username": "jdoe",
   "role": "Admin"
 }
 
@@ -40,7 +42,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username": "johndoe",
+  "username": "jdoe",
   "password": "P@ssw0rd123!"
 }
 

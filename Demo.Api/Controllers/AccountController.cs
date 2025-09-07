@@ -1,5 +1,4 @@
 ﻿using Demo.Api.Models;
-using Demo.Api.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -9,24 +8,16 @@ using System.Security.Claims;
 namespace Demo.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController : ControllerBase
+public class AccountController(
+    UserManager<IdentityUser> userManager,
+    RoleManager<IdentityRole> roleManager,
+    IConfiguration configuration,
+    ApplicationDbContext dbContext) : ControllerBase
 {
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly RoleManager<IdentityRole> roleManager;
-    private readonly IConfiguration configuration;
-    private readonly ApplicationDbContext dbContext;
-
-    public AccountController(
-        UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration,
-        ApplicationDbContext dbContext)
-    {
-        this.userManager = userManager;
-        this.roleManager = roleManager;
-        this.configuration = configuration;
-        this.dbContext = dbContext;
-    }
+    private readonly UserManager<IdentityUser> userManager = userManager;
+    private readonly RoleManager<IdentityRole> roleManager = roleManager;
+    private readonly IConfiguration configuration = configuration;
+    private readonly ApplicationDbContext dbContext = dbContext;
 
     [HttpPost(nameof(Register))]
     public async Task<IActionResult> Register(Register register)
@@ -39,16 +30,16 @@ public class AccountController : ControllerBase
 
         var result = await this.userManager.CreateAsync(user, register.Password);
 
-        //var identityUser = await this.userManager.FindByNameAsync(register.UserName);
+        var identityUser = await this.userManager.FindByNameAsync(register.UserName);
 
-        //var userProfile = new UserProfile(identityUser!.Id)
-        //{
-        //    FirstName = register.FirstName,
-        //    LastName = register.LastName
-        //};
+        var userProfile = new AspNetUserProfile(identityUser!.Id)
+        {
+            FirstName = register.FirstName,
+            LastName = register.LastName
+        };
 
-        //this.dbContext.UserProfiles.Add(userProfile);
-        //await this.dbContext.SaveChangesAsync();
+        this.dbContext.AspNetUserProfiles.Add(userProfile);
+        await this.dbContext.SaveChangesAsync();
 
         return result.Succeeded ? Ok("Register successful!") : BadRequest(result.Errors);
     }

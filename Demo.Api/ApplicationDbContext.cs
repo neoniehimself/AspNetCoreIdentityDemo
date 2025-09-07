@@ -4,16 +4,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Api;
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+public class ApplicationDbContext(IConfiguration configuration) : IdentityDbContext<IdentityUser>
 {
-    private readonly IConfiguration configuration;
+    private readonly IConfiguration configuration = configuration;
 
-    public DbSet<UserProfile> UserProfiles { get; set; }
-
-    public ApplicationDbContext(IConfiguration configuration)
-    {
-        this.configuration = configuration;
-    }
+    public DbSet<AspNetUserProfile> AspNetUserProfiles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -23,12 +18,15 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
     override protected void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<UserProfile>(u =>
-        {
-            u.Property(u => u.FirstName).HasMaxLength(256);
-            u.Property(u => u.LastName).HasMaxLength(256);
-            u.HasOne(u => u.IdentityUser).WithOne().HasForeignKey<UserProfile>(u => u.UserProfileId).OnDelete(DeleteBehavior.Cascade);
-        });
         base.OnModelCreating(builder);
+        builder.Entity<AspNetUserProfile>(p =>
+        {
+            p.Property(p => p.FirstName).HasMaxLength(256);
+            p.Property(p => p.LastName).HasMaxLength(256);
+            p.HasOne(p => p.IdentityUser)
+                .WithOne()
+                .HasForeignKey<AspNetUserProfile>(u => u.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }
