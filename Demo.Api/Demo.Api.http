@@ -1,12 +1,12 @@
 @Demo.Api_HostAddress = https://localhost:7283/api
 
-POST {{Demo.Api_HostAddress}}/account/addrole?role=admin
+POST {{Demo.Api_HostAddress}}/account/addrole?role=Admin
 Content-Type: application/json
 Accept: application/json
 
 ###
 
-POST {{Demo.Api_HostAddress}}/account/addrole?role=user
+POST {{Demo.Api_HostAddress}}/account/addrole?role=User
 Content-Type: application/json
 Accept: application/json
 
@@ -30,7 +30,7 @@ Accept: application/json
 
 {
   "username": "johndoe",
-  "role": "admin"
+  "role": "Admin"
 }
 
 ###
