@@ -5,9 +5,16 @@ using Microsoft.EntityFrameworkCore;
 namespace Demo.Api;
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
+    private readonly IConfiguration configuration;
+
+    public ApplicationDbContext(IConfiguration configuration)
+    {
+        this.configuration = configuration;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer("Server=.;Database=AspNetCoreIdentityDemo;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;");
+        optionsBuilder.UseSqlServer(this.configuration["ConnectionStrings:DefaultConnection"]);
     }
 }

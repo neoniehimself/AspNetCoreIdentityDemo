@@ -61,7 +61,7 @@ public class AccountController : ControllerBase
             (
                 issuer: this.configuration["Jwt:Issuer"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddSeconds(30),
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(this.configuration["Jwt:ExpiryMinutes"])),
                 signingCredentials: new SigningCredentials(
                     new SymmetricSecurityKey(
                         System.Text.Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!)),
@@ -71,7 +71,7 @@ public class AccountController : ControllerBase
 
             return Ok(new
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(token)
+                token = new JwtSecurityTokenHandler().WriteToken(token)
             });
         }
 

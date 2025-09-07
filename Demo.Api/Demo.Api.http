@@ -1,6 +1,59 @@
-@Demo.Api_HostAddress = http://localhost:5012
+@Demo.Api_HostAddress = https://localhost:7283/api
 
-GET {{Demo.Api_HostAddress}}/weatherforecast/
+POST {{Demo.Api_HostAddress}}/account/addrole?role=admin
+Content-Type: application/json
 Accept: application/json
+
+###
+
+POST {{Demo.Api_HostAddress}}/account/addrole?role=user
+Content-Type: application/json
+Accept: application/json
+
+###
+
+POST {{Demo.Api_HostAddress}}/account/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "noemail@noemail.com",
+  "username": "johndoe",
+  "password": "P@ssw0rd123!"
+}
+
+###
+
+POST {{Demo.Api_HostAddress}}/account/assignrole
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "johndoe",
+  "role": "admin"
+}
+
+###
+
+POST {{Demo.Api_HostAddress}}/account/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "johndoe",
+  "password": "P@ssw0rd123!"
+}
+
+###
+
+GET {{Demo.Api_HostAddress}}/admin
+Accept: application/json
+Authorization: Bearer [put_token_here]
+
+###
+
+GET {{Demo.Api_HostAddress}}/user
+Accept: application/json
+Authorization: Bearer [put_token_here]
 
 ###
