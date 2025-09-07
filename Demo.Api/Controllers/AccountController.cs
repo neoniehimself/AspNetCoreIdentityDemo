@@ -14,12 +14,18 @@ public class AccountController : ControllerBase
     private readonly UserManager<IdentityUser> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly IConfiguration configuration;
+    private readonly ApplicationDbContext dbContext;
 
-    public AccountController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+    public AccountController(
+        UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        IConfiguration configuration,
+        ApplicationDbContext dbContext)
     {
         this.userManager = userManager;
         this.roleManager = roleManager;
         this.configuration = configuration;
+        this.dbContext = dbContext;
     }
 
     [HttpPost(nameof(Register))]
@@ -32,6 +38,18 @@ public class AccountController : ControllerBase
         };
 
         var result = await this.userManager.CreateAsync(user, register.Password);
+
+        //var identityUser = await this.userManager.FindByNameAsync(register.UserName);
+
+        //var userProfile = new UserProfile(identityUser!.Id)
+        //{
+        //    FirstName = register.FirstName,
+        //    LastName = register.LastName
+        //};
+
+        //this.dbContext.UserProfiles.Add(userProfile);
+        //await this.dbContext.SaveChangesAsync();
+
         return result.Succeeded ? Ok("Register successful!") : BadRequest(result.Errors);
     }
 
