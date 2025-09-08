@@ -1,9 +1,12 @@
 ﻿using Demo.Api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Api;
-public class ApplicationDbContext(IConfiguration configuration) : IdentityDbContext<AspNetUser, AspNetRole, Guid>
+public class ApplicationDbContext(IConfiguration configuration)
+    : IdentityDbContext<AspNetUser, AspNetRole, Guid, IdentityUserClaim<Guid>,
+        AspNetUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
 {
     private readonly IConfiguration configuration = configuration;
 

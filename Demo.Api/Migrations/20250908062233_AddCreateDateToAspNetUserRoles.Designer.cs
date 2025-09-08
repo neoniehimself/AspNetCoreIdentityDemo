@@ -4,6 +4,7 @@ using Demo.Api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250908062233_AddCreateDateToAspNetUserRoles")]
+    partial class AddCreateDateToAspNetUserRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,7 +136,7 @@ namespace Demo.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AspNetUserProfiles", (string)null);
+                    b.ToTable("AspNetUserProfiles");
                 });
 
             modelBuilder.Entity("Demo.Api.Models.AspNetUserRole", b =>

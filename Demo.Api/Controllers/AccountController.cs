@@ -22,26 +22,26 @@ public class AccountController(
     [HttpPost(nameof(Register))]
     public async Task<IActionResult> Register(Register register)
     {
-        var user = new AspNetUser
+        var result = await this.userManager.CreateAsync(new AspNetUser()
         {
             UserName = register.UserName,
             Email = register.Email
-        };
+        }, register.Password);
 
-        var result = await this.userManager.CreateAsync(user, register.Password);
-
-        var AspNetUser = await this.userManager.FindByNameAsync(register.UserName);
-
-        var userProfile = new AspNetUserProfile(AspNetUser!.Id)
+        if (result.Succeeded)
         {
-            FirstName = register.FirstName,
-            LastName = register.LastName
-        };
+            var aspNetUser = await this.userManager.FindByNameAsync(register.UserName);
+            var userProfile = new AspNetUserProfile(aspNetUser!.Id)
+            {
+                FirstName = register.FirstName,
+                LastName = register.LastName
+            };
+            this.dbContext.AspNetUserProfiles.Add(userProfile);
+            await this.dbContext.SaveChangesAsync();
+            return Ok("Regiter successful!");
+        }
 
-        this.dbContext.AspNetUserProfiles.Add(userProfile);
-        await this.dbContext.SaveChangesAsync();
-
-        return result.Succeeded ? Ok("Register successful!") : BadRequest(result.Errors);
+        return BadRequest(result.Errors);
     }
 
     [HttpPost(nameof(Login))]
